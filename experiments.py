@@ -162,6 +162,7 @@ def find_grad_dis(args, dataset_loader, clf):
     avg_grad_dis /= cnt2
     
     return avg_grad_dis
+
 def main():
     # Training settings
     parser = argparse.ArgumentParser(description="PyTorch Gradient Disparity Code")
@@ -220,13 +221,14 @@ def main():
         vLosses.append(ce)
         vERRs.append(err)
         vACCs5.append(acc5)
-        
+                
+        ag = find_grad_dis(args, my_train_loader, clf)
+        avg_GD.append(ag)
+
         if epoch%args.logevery == 0:
             print('epoch: ', epoch, ' loss: ', t_loss, ' acc: ',100.0 - t_err)
             print('val loss: ', ce, ' acc: ', 100.0 - err)
-        
-        ag = find_grad_dis(args, my_train_loader, clf)
-        avg_GD.append(ag)
+            print("Gradient disparity:", ag)
 
         epoch += 1
         torch.cuda.empty_cache()
