@@ -147,6 +147,8 @@ def find_grad_dis(args, dataset_loader, clf):
             cnt += 1
     
     Grads = np.array(Grads)
+    print(Grads.shape)
+    
     cnt2 = 0
     avg_grad_dis = 0
     # now compute the pairwise \ell_2 norm distance
@@ -191,7 +193,8 @@ def main():
         num_classes = 100
     
     # Device configuration
-    device = torch.cuda.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = 'cpu'
+#    device = torch.cuda.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # load data loader
     my_train_loader, my_test_loader, my_train_dataset = get_data_loader(args.dataset, batch_size=args.batchsize, num_samples=args.numsamples, corrupt_prob = args.corruptprob)
