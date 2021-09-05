@@ -7,6 +7,8 @@ from torch.autograd import Variable
 def get_model(model, inputsize, numclasses, scale, init=None):
     """function to get the neural network configuration
     """
+    if model=='lenet':
+        clf = LeNet(numclasses)
     if model=='alexnet':
         clf = AlexNet(64*scale, numclasses)
     elif model=='fc':
@@ -80,6 +82,36 @@ class NeuralNetFC(nn.Module):
             layers += [nn.Linear(self.hidden_units, self.num_classes)]
         return nn.Sequential(*layers) 
         
+class LeNet(nn.Module):
+    """LeNet configuration to be used for MNIST size images
+    """
+    def __init__(self, n_classes=10):
+        super(LeNet5, self).__init__()
+        
+        self.feature_extractor = nn.Sequential(            
+            nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5, stride=1),
+            nn.Tanh(),
+            nn.AvgPool2d(kernel_size=2),
+            nn.Conv2d(in_channels=6, out_channels=16, kernel_size=5, stride=1),
+            nn.Tanh(),
+            nn.AvgPool2d(kernel_size=2),
+            nn.Conv2d(in_channels=16, out_channels=120, kernel_size=5, stride=1),
+            nn.Tanh()
+        )
+
+        self.classifier = nn.Sequential(
+            nn.Linear(in_features=120, out_features=84),
+            nn.Tanh(),
+            nn.Linear(in_features=84, out_features=n_classes),
+        )
+
+    def forward(self, x):
+        x = self.feature_extractor(x)
+        x = torch.flatten(x, 1)
+        logits = self.classifier(x)
+        #probs = F.softmax(logits, dim=1)
+        return logits #, probs
+    
 class AlexNet(nn.Module):
     """AlexNet configuration to be used for MNIST size images
     """
