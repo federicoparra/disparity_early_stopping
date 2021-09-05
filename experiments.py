@@ -168,7 +168,7 @@ def find_grad_dis(args, dataset_loader, clf):
 def main():
     # Training settings
     parser = argparse.ArgumentParser(description="PyTorch Gradient Disparity Code")
-    parser.add_argument("--model", type=str, choices=['alexnet', 'fc', 'VGG11','VGG13','VGG16','VGG19','resnet18','resnet34'], help="the neural network configuration")
+    parser.add_argument("--model", type=str, choices=['lenet', 'alexnet', 'fc', 'VGG11','VGG13','VGG16','VGG19','resnet18','resnet34'], help="the neural network configuration")
     parser.add_argument("--init", type=str, choices=['SN', 'HN'], default= None, help="the parameter initialization")
     parser.add_argument("--scale", type=float, default=1, help="the scale to use for the configuration, for FC it is the number of hidden units")
     parser.add_argument("--dataset", type=str, default="mnist", help="dataset choices are mnist, cifar10, anf cifar100")
