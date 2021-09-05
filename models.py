@@ -86,7 +86,7 @@ class LeNet(nn.Module):
     """LeNet configuration to be used for MNIST size images
     """
     def __init__(self, n_classes=10):
-        super(LeNet5, self).__init__()
+        super(LeNet, self).__init__()
         
         self.feature_extractor = nn.Sequential(            
             nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5, stride=1),
