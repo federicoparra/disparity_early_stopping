@@ -141,6 +141,6 @@ def get_data_loader(name, batch_size, num_samples=None, corrupt_prob = 0):
                                                shuffle=True)
 
     test_loader = torch.utils.data.DataLoader(dataset=test_dataset, num_workers = 11,
-                                              batch_size=batch_size, 
+                                              batch_size=10000, #batch_size, # SO THAT MNIST uses all cases of test set for test 
                                               shuffle=True)
     return my_train_loader, test_loader, my_train_dataset
