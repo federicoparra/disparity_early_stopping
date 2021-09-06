@@ -96,7 +96,7 @@ class LeNet(nn.Module):
         self.tanh = nn.Tanh()
         self.avgpool = nn.AvgPool2d(kernel_size = 2, stride = 2)
 
-      def forward(self, x):
+    def forward(self, x):
         x = self.conv1(x)
         x = self.tanh(x)
         x = self.avgpool(x)
