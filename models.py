@@ -88,30 +88,30 @@ class LeNet(nn.Module):
     def __init__(self, n_classes=10):
         super(LeNet, self).__init__()
         
-        self.feature_extractor = nn.Sequential(            
-            nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5, stride=1),
-            nn.Tanh(),
-            nn.AvgPool2d(kernel_size=2),
-            nn.Conv2d(in_channels=6, out_channels=16, kernel_size=5, stride=1),
-            nn.Tanh(),
-            nn.AvgPool2d(kernel_size=2),
-            nn.Conv2d(in_channels=16, out_channels=120, kernel_size=5, stride=1),
-            nn.Tanh()
-        )
+        self.conv1 = nn.Conv2d(in_channels = 1, out_channels = 6, kernel_size = 5, stride = 1, padding = 0)
+        self.conv2 = nn.Conv2d(in_channels = 6, out_channels = 16, kernel_size = 5, stride = 1, padding = 0)
+        self.conv3 = nn.Conv2d(in_channels = 16, out_channels = 120, kernel_size = 5, stride = 1, padding = 0)
+        self.linear1 = nn.Linear(120, 84)
+        self.linear2 = nn.Linear(84, 10)
+        self.tanh = nn.Tanh()
+        self.avgpool = nn.AvgPool2d(kernel_size = 2, stride = 2)
 
-        self.classifier = nn.Sequential(
-            nn.Linear(in_features=120, out_features=84),
-            nn.Tanh(),
-            nn.Linear(in_features=84, out_features=n_classes),
-        )
+      def forward(self, x):
+        x = self.conv1(x)
+        x = self.tanh(x)
+        x = self.avgpool(x)
+        x = self.conv2(x)
+        x = self.tanh(x)
+        x = self.avgpool(x)
+        x = self.conv3(x)
+        x = self.tanh(x)
 
-    def forward(self, x):
-        x = self.feature_extractor(x)
-        x = torch.flatten(x, 1)
-        logits = self.classifier(x)
-        #probs = F.softmax(logits, dim=1)
-        return logits #, probs
-    
+        x = x.reshape(x.shape[0], -1)
+        x = self.linear1(x)
+        x = self.tanh(x)
+        x = self.linear2(x)
+        return x
+
 class AlexNet(nn.Module):
     """AlexNet configuration to be used for MNIST size images
     """
